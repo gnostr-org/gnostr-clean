@@ -13,7 +13,7 @@ use std::path::Path;
 
 fn main() -> Result<(), Box<dyn Error>> {
     // parse in our options from the command line args
-    let options = Options::from(&mut env::args_os());
+    let options = Options::from(env::args_os());
 
     // iterate each provided location
     for location in &options.locations {
