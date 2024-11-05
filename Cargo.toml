@@ -1,5 +1,5 @@
 [package]
-name = "detox"
+name = "gnostr-clean"
 version = "0.1.2" # remember to update html_root_url
 authors = ["Isaac Whitfield <iw@whitfin.io>"]
 description = "Quickly clean up your development directories on disk"
