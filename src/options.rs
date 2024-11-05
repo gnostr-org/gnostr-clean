@@ -28,6 +28,7 @@ impl Options {
         Options {
             cleaners: vec![
                 Box::new(GitCleaner),
+                Box::new(GnostrCleaner),
                 Box::new(GradleCleaner),
                 Box::new(MixCleaner),
                 Box::new(NodeCleaner),

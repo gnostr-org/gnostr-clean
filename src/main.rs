@@ -47,6 +47,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                     .expect("dir should be a str");
 
                 // clean the directory
+                print!("{} ", cleaner.name());
                 cleaner.clean(dir)?;
             }
         }

@@ -1,6 +1,7 @@
 //! Cleaning traits and implementations.
 mod cargo;
 mod git;
+mod gnostr;
 mod gradle;
 mod maven;
 mod mix;
@@ -8,6 +9,7 @@ mod node;
 
 pub use cargo::CargoCleaner;
 pub use git::GitCleaner;
+pub use gnostr::GnostrCleaner;
 pub use gradle::GradleCleaner;
 pub use maven::MavenCleaner;
 pub use mix::MixCleaner;
@@ -44,6 +46,7 @@ pub fn cmd(dir: &str, cmd: &str, args: &[&str]) -> io::Result<()> {
 /// Purges a location on disk, similar to `rm -rf`.
 pub fn del(parent: &str, child: &str) -> io::Result<()> {
     let path = format!("{}/{}", parent, child);
+    println!("{}", path);
 
     // check for errors that we're ok with
     if let Err(err) = fs::remove_dir_all(path) {

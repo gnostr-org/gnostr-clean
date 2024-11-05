@@ -1,22 +1,23 @@
-//! Basic cleaner module for Node.js projects.
+//! Basic cleaner module for Cargo projects.
 use super::Cleaner;
 use std::io;
 
-/// Cleaner implementation for Node.js projects.
-pub struct NodeCleaner;
-impl Cleaner for NodeCleaner {
+/// Cleaner implementation for Gnostr Artifacts
+pub struct GnostrCleaner;
+impl Cleaner for GnostrCleaner {
     /// Returns the name of this cleaner.
     fn name(&self) -> &str {
-        "Node.js"
+        "Gnostr"
     }
 
     /// Returns the triggers associated with this cleaner.
     fn triggers(&self) -> &[&str] {
-        &["package.json", "yarn.json"]
+        &[".gnostr"]
     }
 
-    /// Cleans the provided directory based on a NodeJS structure.
+    /// cleaner the provided directory based on a Cargo structure.
     fn clean(&self, dir: &str) -> io::Result<()> {
+        super::cmd(dir, "cargo", &["clean"])?;
         super::del(dir, "node_modules")
     }
 }
