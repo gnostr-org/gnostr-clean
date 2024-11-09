@@ -12,13 +12,14 @@ impl Cleaner for CargoCleaner {
 
     /// Returns the triggers associated with this cleaner.
     fn triggers(&self) -> &[&str] {
-        &["Cargo.toml", "vendor"]
+        &["Cargo.toml", "vendor", ".cargo/registry"]
     }
 
     /// cleaner the provided directory based on a Cargo structure.
     fn clean(&self, dir: &str) -> io::Result<()> {
         super::cmd(dir, "cargo", &["clean"])?;
         super::del(dir, "target");
-        super::del(dir, "vendor")
+        super::del(dir, "vendor");
+        super::del(dir, ".cargo/registry")
     }
 }

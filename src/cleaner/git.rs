@@ -12,12 +12,13 @@ impl Cleaner for GitCleaner {
 
     /// Returns the triggers associated with this cleaner.
     fn triggers(&self) -> &[&str] {
-        &[".git"]
+        &[".git", ".libs"]
     }
 
     /// Cleans the provided directory based on a Git structure.
     fn clean(&self, dir: &str) -> io::Result<()> {
         super::cmd(dir, "git", &["reflog", "expire", "--all", "--expire=now"])?;
-        super::cmd(dir, "git", &["gc", "-q", "--prune=now", "--aggressive"])
+        super::cmd(dir, "git", &["gc", "-q", "--prune=now", "--aggressive"]);
+        super::del(dir, ".libs")
     }
 }

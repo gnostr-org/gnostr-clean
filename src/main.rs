@@ -24,6 +24,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         for entry in WalkDir::new(location).into_iter().filter_map(Result::ok) {
             // grab the full path
             let path = entry.path();
+            println!("{}", path.display());
 
             // fetch the file name
             let segment = path

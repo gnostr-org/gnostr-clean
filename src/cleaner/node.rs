@@ -12,11 +12,12 @@ impl Cleaner for NodeCleaner {
 
     /// Returns the triggers associated with this cleaner.
     fn triggers(&self) -> &[&str] {
-        &["package.json", "yarn.json"]
+        &["package.json", "yarn.json", ".npm"]
     }
 
     /// Cleans the provided directory based on a NodeJS structure.
     fn clean(&self, dir: &str) -> io::Result<()> {
-        super::del(dir, "node_modules")
+        super::del(dir, "node_modules");
+        super::del(dir, ".npm")
     }
 }
