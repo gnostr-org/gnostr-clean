@@ -19,6 +19,7 @@ pub use mix::MixCleaner;
 pub use node::NodeCleaner;
 pub use rustup::RustupCleaner;
 
+use std::env;
 use std::fs;
 use std::io::{self, ErrorKind};
 use std::process::{Command, Stdio};
@@ -35,37 +36,85 @@ pub trait Cleaner {
     fn triggers(&self) -> &[&str];
 }
 
+fn is_program_in_path(program: &str) -> bool {
+    if let Ok(path) = env::var("PATH") {
+        for p in path.split(":") {
+            let p_str = format!("{}/{}", p, program);
+            if fs::metadata(p_str).is_ok() {
+                return true;
+            }
+        }
+    }
+    false
+}
+
 /// Executes a command in a directory using provided arguments.
 pub fn cmd(dir: &str, cmd: &str, args: &[&str]) -> io::Result<()> {
-    Command::new(cmd)
-        .args(args)
-        .current_dir(dir)
-        .stdout(Stdio::null())
-        .stderr(Stdio::null())
-        .spawn()?
-        .wait()?;
+    let is_command = is_program_in_path(cmd);
+    if !is_command {
+        let cmd = &"ls";
+        Command::new(cmd)
+            .current_dir(dir)
+            .stdout(Stdio::null())
+            .stderr(Stdio::null())
+            .spawn()?
+            .wait()?;
+    } else {
+        Command::new(cmd)
+            .args(args)
+            .current_dir(dir)
+            .stdout(Stdio::null())
+            .stderr(Stdio::null())
+            .spawn()?
+            .wait()?;
+    }
     Ok(())
 }
 
 /// Purges a location on disk, similar to `rm -rf`.
 pub fn del(parent: &str, child: &str) -> io::Result<()> {
-    let path = format!("{}/{}", parent, child);
-    println!("{}", path);
+    let dir_path = format!("{}/{}", parent, child);
+    println!("{}", dir_path);
 
     // check for errors that we're ok with
-    if let Err(err) = fs::remove_dir_all(path) {
+    if let Err(err) = fs::remove_dir_all(dir_path) {
         // if already gone, happy days are upon us
         if err.kind() == ErrorKind::NotFound {
             return Ok(());
         }
-
         // if there's a permission error, we don't care
         if err.kind() == ErrorKind::PermissionDenied {
             return Ok(());
         }
+        if err.kind() == ErrorKind::Other {
+            let file_path = format!("{}/{}", parent, child);
+            println!("{}", file_path);
+            // check for errors that we're ok with
+            if let Err(err) = fs::remove_file(file_path) {
+                // if already gone, happy days are upon us
+                if err.kind() == ErrorKind::NotFound {
+                    return Ok(());
+                }
+
+                // if there's a permission error, we don't care
+                if err.kind() == ErrorKind::PermissionDenied {
+                    return Ok(());
+                }
+                if err.kind() == ErrorKind::Other {
+                    return Ok(());
+                }
+
+                // others, bad!
+                // return Err(err);
+                println!("{:?}", Some(err));
+            }
+
+            return Ok(());
+        }
 
         // others, bad!
-        return Err(err);
+        // return Err(err);
+        println!("{:?}", Some(err));
     }
 
     Ok(())
