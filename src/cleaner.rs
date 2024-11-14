@@ -3,21 +3,21 @@ mod cargo;
 mod git;
 mod gnostr;
 mod gradle;
+mod macos;
 mod maven;
 mod mix;
 mod node;
 mod rustup;
-mod macos;
 
 pub use cargo::CargoCleaner;
 pub use git::GitCleaner;
 pub use gnostr::GnostrCleaner;
 pub use gradle::GradleCleaner;
+pub use macos::MacosCleaner;
 pub use maven::MavenCleaner;
 pub use mix::MixCleaner;
 pub use node::NodeCleaner;
 pub use rustup::RustupCleaner;
-pub use macos::MacosCleaner;
 
 use std::fs;
 use std::io::{self, ErrorKind};

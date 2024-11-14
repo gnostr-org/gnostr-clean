@@ -17,7 +17,7 @@ impl Cleaner for NodeCleaner {
 
     /// Cleans the provided directory based on a NodeJS structure.
     fn clean(&self, dir: &str) -> io::Result<()> {
-        super::del(dir, "node_modules");
+        super::del(dir, "node_modules")?;
         super::del(dir, ".npm")
     }
 }

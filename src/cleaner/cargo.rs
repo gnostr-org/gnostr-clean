@@ -18,8 +18,8 @@ impl Cleaner for CargoCleaner {
     /// cleaner the provided directory based on a Cargo structure.
     fn clean(&self, dir: &str) -> io::Result<()> {
         super::cmd(dir, "cargo", &["clean"])?;
-        super::del(dir, "target");
-        super::del(dir, "vendor");
+        super::del(dir, "target")?;
+        super::del(dir, "vendor")?;
         super::del(dir, ".cargo/registry")
     }
 }

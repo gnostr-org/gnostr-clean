@@ -34,6 +34,8 @@ impl Options {
                 Box::new(NodeCleaner),
                 Box::new(MavenCleaner),
                 Box::new(CargoCleaner),
+                Box::new(RustupCleaner),
+                Box::new(MacosCleaner),
             ],
             locations: options
                 .values_of("locations")
