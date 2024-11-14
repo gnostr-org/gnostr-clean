@@ -18,7 +18,7 @@ impl Cleaner for GitCleaner {
     /// Cleans the provided directory based on a Git structure.
     fn clean(&self, dir: &str) -> io::Result<()> {
         super::cmd(dir, "git", &["reflog", "expire", "--all", "--expire=now"])?;
-        super::cmd(dir, "git", &["gc", "-q", "--prune=now", "--aggressive"]);
+        super::cmd(dir, "git", &["gc", "--prune=now", "--aggressive"]);
         super::del(dir, ".libs")
     }
 }
