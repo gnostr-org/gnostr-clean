@@ -56,14 +56,17 @@ fn main() -> Result<(), Box<dyn Error>> {
         // fetch the size of the location when done
         let end = get_size(location);
 
-        // output the stats
-        println!(
-            "Reduced {} from {} to {} ({:.2}%)",
-            location.display(),
-            start,
-            end,
-            ((start - end) as f64 / start as f64) * 100.0
-        )
+        if start > end {
+            // output the stats
+            println!(
+                "Reduced {} from {} to {} ({:.2}%)",
+                location.display(),
+                start,
+                end,
+                ((start - end) as f64 / start as f64) * 100.0
+            )
+        } else {
+        }
     }
 
     // done!
