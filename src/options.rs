@@ -58,7 +58,8 @@ impl Options {
                 Arg::with_name("locations")
                     .help("Locations to search for cleanup")
                     .multiple(true)
-                    .required(true),
+                    .required(true)
+                    .default_value("."),
             ])
             // settings required for parsing
             .settings(&[
