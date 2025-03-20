@@ -4,6 +4,7 @@ mod git;
 mod gnostr;
 mod gradle;
 mod macos;
+mod makefile;
 mod maven;
 mod mix;
 mod node;
@@ -14,6 +15,7 @@ pub use git::GitCleaner;
 pub use gnostr::GnostrCleaner;
 pub use gradle::GradleCleaner;
 pub use macos::MacosCleaner;
+pub use makefile::MakeFileCleaner;
 pub use maven::MavenCleaner;
 pub use mix::MixCleaner;
 pub use node::NodeCleaner;
@@ -23,6 +25,7 @@ use std::env;
 use std::fs;
 use std::io::{self, ErrorKind};
 use std::process::{Command, Stdio};
+use std::str;
 
 /// Trait to represent a cleaning structure.
 pub trait Cleaner {
@@ -54,20 +57,30 @@ pub fn cmd(dir: &str, cmd: &str, args: &[&str]) -> io::Result<()> {
     let is_command = is_program_in_path(cmd);
     if !is_command {
         let cmd = &"ls";
-        Command::new(cmd)
+        let cmd_output = Command::new(cmd)
             .current_dir(dir)
-            .stdout(Stdio::null())
+            .stdout(Stdio::piped())
             .stderr(Stdio::null())
             .spawn()?
-            .wait()?;
+            .wait_with_output()?;
+        if !cmd_output.status.success() {
+            println!("Command failed with status: {}", cmd_output.status);
+        }
+        let cmd_stdout = str::from_utf8(&cmd_output.stdout).expect("");
+        println!("ls Stdout: {}", cmd_stdout);
     } else {
-        Command::new(cmd)
+        let cmd_output = Command::new(cmd)
             .args(args)
             .current_dir(dir)
-            .stdout(Stdio::null())
+            .stdout(Stdio::piped())
             .stderr(Stdio::null())
             .spawn()?
-            .wait()?;
+            .wait_with_output()?;
+        if !cmd_output.status.success() {
+            println!("Command failed with status: {}", cmd_output.status);
+        }
+        let cmd_stdout = str::from_utf8(&cmd_output.stdout).expect("");
+        println!("Cmd Stdout: {}", cmd_stdout);
     }
     Ok(())
 }
