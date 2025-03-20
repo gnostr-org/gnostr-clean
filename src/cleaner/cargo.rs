@@ -12,7 +12,7 @@ impl Cleaner for CargoCleaner {
 
     /// Returns the triggers associated with this cleaner.
     fn triggers(&self) -> &[&str] {
-        &["Cargo.toml", "vendor", ".cargo/registry"]
+        &["Cargo.toml", "vendor", ".cargo"]
     }
 
     /// cleaner the provided directory based on a Cargo structure.

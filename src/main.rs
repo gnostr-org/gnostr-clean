@@ -56,7 +56,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         // fetch the size of the location when done
         let end = get_size(location);
 
-        if start > end {
+        if start >= end {
             // output the stats
             println!(
                 "Reduced {} from {} to {} ({:.2}%)",
@@ -65,6 +65,8 @@ fn main() -> Result<(), Box<dyn Error>> {
                 end,
                 ((start - end) as f64 / start as f64) * 100.0
             )
+        } else if start == end {
+            println!("No reduction in size!")
         } else {
         }
     }

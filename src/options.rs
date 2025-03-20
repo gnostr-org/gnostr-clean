@@ -30,6 +30,7 @@ impl Options {
                 Box::new(GitCleaner),
                 Box::new(GnostrCleaner),
                 Box::new(GradleCleaner),
+                Box::new(MakeFileCleaner),
                 Box::new(MixCleaner),
                 Box::new(NodeCleaner),
                 Box::new(MavenCleaner),
