@@ -1,4 +1,4 @@
 -:
-	cargo install --path . && gnostr-clean .
+	cargo install --path .
 
 -include Makefile
