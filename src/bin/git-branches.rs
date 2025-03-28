@@ -11,7 +11,7 @@ struct Node {
     files: Vec<String>,
     children: Vec<Box<Node>>,
     hash: String,
-    branch: Option<String>, // Added branch info
+    branch: Option<String>,
 }
 
 impl Node {
@@ -37,7 +37,7 @@ impl Node {
             files,
             children,
             hash: String::new(),
-            branch, // Added branch info
+            branch,
         };
         node.hash = node.calculate_hash();
         node
