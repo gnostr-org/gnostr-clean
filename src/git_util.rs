@@ -223,3 +223,40 @@ pub fn load_commit_tags(repo: &Repository, commit_id: git2::Oid) -> Result<Vec<S
 
     Ok(commit_tags)
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn git2_feature_test() {
+        #[cfg(feature = "git2")]
+        {
+            println!("git2 feature enabled!");
+            // Your git2 code here.
+            if let Err(e) = git2_feature_test_with_error() {
+                eprintln!("git2 example failed: {}", e);
+                panic!("git2 tests failed");
+            }
+        }
+
+        #[cfg(not(feature = "git2"))]
+        {
+            println!("git2 feature disabled.");
+            // Code that doesn't depend on git2.
+        }
+    }
+
+    #[cfg(feature = "git2")]
+    fn git2_feature_test_with_error() -> Result<(), git2::Error> {
+        use git2::Repository;
+        let repo = Repository::open(".")?;
+        println!("Repo path: {:?}", repo.path());
+        Ok(())
+    }
+
+    #[cfg(not(feature = "git2"))]
+    fn git2_not_a_feature_test() -> Result<(), ()> {
+        Ok(())
+    }
+}

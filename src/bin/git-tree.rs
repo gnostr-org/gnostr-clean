@@ -93,3 +93,74 @@ fn main() -> Result<(), std::io::Error> {
     }
     Ok(())
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::fs;
+    use std::io::Write;
+    use std::path::Path;
+
+    #[test]
+    fn test_node_calculate_hash() {
+        let node = Node::new(
+            "test_folder".to_string(),
+            vec!["file1.txt".to_string(), "file2.txt".to_string()],
+            vec![],
+        );
+        let hash = node.calculate_hash();
+        assert!(!hash.is_empty());
+    }
+
+    #[test]
+    fn test_node_clone_with_new_hash() {
+        let node1 = Node::new(
+            "test_folder".to_string(),
+            vec!["file1.txt".to_string(), "file2.txt".to_string()],
+            vec![],
+        );
+        let node2 = node1.clone_with_new_hash();
+        assert_eq!(node1.hash, node2.hash);
+        assert_eq!(node1.folder, node2.folder);
+    }
+
+    #[test]
+    fn test_build_git_tree_empty_dir() {
+        let temp_dir = tempfile::tempdir().unwrap();
+        let result = build_git_tree(temp_dir.path()).unwrap();
+        assert!(result.is_some());
+        let node = result.unwrap();
+        assert_eq!(
+            node.folder,
+            temp_dir.path().file_name().unwrap().to_str().unwrap()
+        );
+        assert!(node.files.is_empty());
+        assert!(node.children.is_empty());
+    }
+
+    #[test]
+    fn test_build_git_tree_with_files_and_dirs() {
+        let temp_dir = tempfile::tempdir().unwrap();
+        let file_path = temp_dir.path().join("test_file.txt");
+        let mut file = fs::File::create(&file_path).unwrap();
+        file.write_all(b"test content").unwrap();
+
+        let sub_dir_path = temp_dir.path().join("sub_dir");
+        fs::create_dir(&sub_dir_path).unwrap();
+        let sub_file_path = sub_dir_path.join("sub_file.txt");
+        let mut sub_file = fs::File::create(&sub_file_path).unwrap();
+        sub_file.write_all(b"sub content").unwrap();
+
+        let result = build_git_tree(temp_dir.path()).unwrap();
+        assert!(result.is_some());
+        let node = result.unwrap();
+        assert_eq!(
+            node.folder,
+            temp_dir.path().file_name().unwrap().to_str().unwrap()
+        );
+        assert_eq!(node.files, vec!["test_file.txt".to_string()]);
+        assert_eq!(node.children.len(), 1);
+        assert_eq!(node.children[0].folder, "sub_dir".to_string());
+        assert_eq!(node.children[0].files, vec!["sub_file.txt".to_string()]);
+    }
+}
