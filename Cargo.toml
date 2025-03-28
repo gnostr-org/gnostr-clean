@@ -1,6 +1,6 @@
 [package]
 name = "gitr"
-version = "0.1.2" # remember to update html_root_url
+version = "0.0.1" # remember to update html_root_url
 authors = ["gnostr gnostr@gnostr.org", "Isaac Whitfield <iw@whitfin.io>"]
 description = "Quickly clean up your development directories on disk"
 repository = "https://github.com/gnostr-org/gitr"
@@ -15,6 +15,7 @@ assert_cmd = "2.0.10"
 chrono = "0.4"
 clap = { version = "4.2.4", features = ["derive"] }
 git2 = "0.17.1"
+nostr-sdk = "0.40.0"
 rayon = "1.5.1"
 regex = "1.5.4"
 serde = { version = "1.0", features = ["derive"] }
