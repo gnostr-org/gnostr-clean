@@ -1,5 +1,5 @@
 #![allow(unused_imports)] // For potential future imports
-
+use nostr_sdk::Keys;
 use sha2::{Digest, Sha256};
 use std::fs;
 use std::path::{Path, PathBuf};
@@ -87,7 +87,11 @@ fn build_git_tree(path: &Path) -> Result<Option<Box<Node>>, std::io::Error> {
 fn main() -> Result<(), std::io::Error> {
     let git_path = Path::new(".git"); // Replace with your .git directory path
     if let Some(root_node) = build_git_tree(git_path)? {
-        println!("{:#?}", root_node);
+        println!("root_node:{:#?}", root_node);
+
+        let keys = Keys::parse(&root_node.hash).expect("Keys::parse from &root_node.hash");
+        println!("Public key: {}", keys.public_key());
+        println!("Private key (hex): {:?}", *keys.secret_key());
     } else {
         println!(".git not found or empty.");
     }
