@@ -54,7 +54,7 @@ pub fn config_commit_info(repo: &Repository, commit: &git2::Commit) -> Result<Co
     let repo_name = config_repo_name(repo)?;
     let tags = vec![];
     //todo
-    let operation ="addition".to_owned();
+    let operation = "addition".to_owned();
     // Retrieve the tree of the commit
     let tree = commit.tree()?;
     // Traverse the tree to get the file paths and content
@@ -76,25 +76,28 @@ pub fn config_commit_info(repo: &Repository, commit: &git2::Commit) -> Result<Co
 }
 
 pub fn load_all_commits(repo: &Repository) -> Result<Vec<String>, git2::Error> {
- 
     let mut revwalk = repo.revwalk()?;
-    
+
     revwalk.push_head()?;
     revwalk.set_sorting(git2::Sort::TOPOLOGICAL)?;
-    
+
     let mut commits = Vec::new();
-    
+
     for oid in revwalk {
         let oid = oid?;
         let commit = repo.find_commit(oid)?;
         let commit_id = commit.id().to_string();
         commits.push(commit_id);
     }
-    
+
     Ok(commits)
 }
 
-pub fn load_commits_by_conditions(commit_from: Option<String>, commit_to: Option<String>, commits: &[String]) -> Vec<String> {
+pub fn load_commits_by_conditions(
+    commit_from: Option<String>,
+    commit_to: Option<String>,
+    commits: &[String],
+) -> Vec<String> {
     match (commit_from, commit_to) {
         (Some(start_commit), Some(end_commit)) => {
             let start_index = commits.iter().position(|commit| *commit == start_commit);
@@ -176,7 +179,10 @@ pub fn load_all_object_ids(repo: &Repository) -> Result<Vec<git2::Oid>, git2::Er
     Ok(object_ids)
 }
 
-pub fn parse_start_date_to_datetime(input: &str, mytype: &str) -> Result<DateTime<Utc>, &'static str> {
+pub fn parse_start_date_to_datetime(
+    input: &str,
+    mytype: &str,
+) -> Result<DateTime<Utc>, &'static str> {
     let date = NaiveDate::parse_from_str(input, "%Y-%m-%d").map_err(|_| "Invalid date format")?;
     let time: NaiveTime;
     if mytype == "start" {
@@ -185,12 +191,12 @@ pub fn parse_start_date_to_datetime(input: &str, mytype: &str) -> Result<DateTim
         } else {
             return Err("Invalid time format");
         }
-    } else  if let Some(t) = NaiveTime::from_hms_opt(23, 59, 59) {
-                time = t;
+    } else if let Some(t) = NaiveTime::from_hms_opt(23, 59, 59) {
+        time = t;
     } else {
-           return Err("Invalid time format");
+        return Err("Invalid time format");
     }
-        
+
     let datetime = NaiveDateTime::new(date, time);
     let datetime_utc = DateTime::from_utc(datetime, Utc);
     Ok(datetime_utc)
@@ -214,7 +220,6 @@ pub fn load_commit_tags(repo: &Repository, commit_id: git2::Oid) -> Result<Vec<S
             commit_tags.push(tag_name.to_string());
         }
     }
-    
 
     Ok(commit_tags)
 }

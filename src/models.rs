@@ -1,7 +1,7 @@
 #![warn(clippy::new_without_default)]
+use chrono::{DateTime, FixedOffset};
 use clap::Parser;
 use serde::{Deserialize, Serialize};
-use chrono::{DateTime, FixedOffset};
 /// Represents the configuration for sensleaks tool.
 #[derive(Parser, Debug)]
 #[command(
@@ -49,8 +49,8 @@ pub struct Config {
     pub branch: Option<String>,
 
     /// run gitleaks on uncommitted code
-    #[arg(long,default_value = "true")]
-    pub uncommitted: bool ,
+    #[arg(long, default_value = "true")]
+    pub uncommitted: bool,
 
     /// user to scan
     #[arg(long)]
@@ -107,14 +107,14 @@ pub struct Rule {
 }
 
 impl Rule {
-    pub fn new() -> Rule{
-        Rule{
+    pub fn new() -> Rule {
+        Rule {
             description: String::from("11"),
-            id:  String::from("11"),
-            regex:  String::from("11"),
+            id: String::from("11"),
+            regex: String::from("11"),
             entropy: Some(3.1),
             keywords: Vec::new(),
-            allowlist: None
+            allowlist: None,
         }
     }
 }
