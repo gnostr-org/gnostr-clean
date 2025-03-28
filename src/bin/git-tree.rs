@@ -1,13 +1,46 @@
 #![allow(unused_imports)] // For potential future imports
 
+use sha2::{Digest, Sha256};
 use std::fs;
 use std::path::{Path, PathBuf};
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 struct Node {
     folder: String,
     files: Vec<String>,
     children: Vec<Box<Node>>,
+    hash: String,
+}
+impl Node {
+    fn calculate_hash(&self) -> String {
+        let mut hasher = Sha256::new();
+        hasher.update(self.folder.as_bytes());
+        for file in &self.files {
+            hasher.update(file.as_bytes());
+        }
+        for child in &self.children {
+            hasher.update(child.hash.as_bytes());
+        }
+        let result = hasher.finalize();
+        format!("{:x}", result)
+    }
+
+    fn new(folder: String, files: Vec<String>, children: Vec<Box<Node>>) -> Node {
+        let mut node = Node {
+            folder,
+            files,
+            children,
+            hash: String::new(), // Initialize hash as empty
+        };
+        node.hash = node.calculate_hash(); // Calculate and set the hash
+        node
+    }
+
+    fn clone_with_new_hash(&self) -> Node {
+        let mut cloned = self.clone();
+        cloned.hash = cloned.calculate_hash();
+        cloned
+    }
 }
 
 fn build_git_tree(path: &Path) -> Result<Option<Box<Node>>, std::io::Error> {
@@ -39,11 +72,16 @@ fn build_git_tree(path: &Path) -> Result<Option<Box<Node>>, std::io::Error> {
         }
     }
 
-    Ok(Some(Box::new(Node {
+    let mut new_node = Box::new(Node {
         folder: folder_name,
         files,
         children,
-    })))
+        hash: String::new(),
+    });
+
+    new_node.hash = new_node.calculate_hash();
+
+    Ok(Some(new_node))
 }
 
 fn main() -> Result<(), std::io::Error> {
