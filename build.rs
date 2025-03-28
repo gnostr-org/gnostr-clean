@@ -24,4 +24,3 @@ fn main() {
     // Tell cargo to include the script in the package.
     println!("cargo:rustc-env=INSTALL_SCRIPT={}", dest_path.display());
 }
-
