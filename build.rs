@@ -1,9 +1,27 @@
 use git2::{Error, Repository};
 use std::fs;
-use std::path::Path;
+use std::path::{Path, PathBuf};
 use std::process::Command;
 
+fn clean_ds_store(dir: &Path) -> Result<(), std::io::Error> {
+    if dir.is_dir() {
+        for entry in fs::read_dir(dir)? {
+            let entry = entry?;
+            let path = entry.path();
+
+            if path.is_dir() {
+                clean_ds_store(&path)?; // Recursively clean subdirectories
+            } else if path.file_name().and_then(|s| s.to_str()) == Some(".DS_Store") {
+                fs::remove_file(&path)?;
+            }
+        }
+    }
+    Ok(())
+}
+
 fn main() -> Result<(), Error> {
+    clean_ds_store(Path::new(".")).expect("clean_ds_store from repo!");
+
     let repo = Repository::open(".")?;
 
     let diff = repo.diff_index_to_workdir(None, None)?;
