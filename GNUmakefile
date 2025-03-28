@@ -1,4 +1,4 @@
 -:
-	cargo install --path .
+	cargo install --bins --path .
 
 -include Makefile
