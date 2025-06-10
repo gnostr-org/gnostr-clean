@@ -1,9 +1,10 @@
 [package]
 name = "gnostr-clean"
-version = "0.0.1" # remember to update html_root_url
+version = "0.0.2" # remember to update html_root_url
 authors = ["Isaac Whitfield <iw@whitfin.io>"]
 description = "Quickly clean up your development directories on disk"
-repository = "https://github.com/whitfin/detox"
+repository = "https://github.com/gnostr-org/gnostr-clean"
+homepage = "https://github.com/gnostr-org/gnostr-clean"
 keywords = ["backup", "compression", "clean"]
 categories = ["algorithms", "command-line-utilities", "filesystem"]
 readme = "README.md"
