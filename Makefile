@@ -71,8 +71,12 @@ cargo-run: 	### 	cargo-run
 	cargo run --bin gnostr-clean
 
 ##===============================================================================
-cargo-dist: 	### 	cargo-dist -h
-	cargo dist -h
+cargo-dist-init: 	### 	dist init
+	dist init
+
+cargo-dist-release.yml: 	### 	.github/workflows/release.yml
+	cat .github/workflows/release.yml | sed 's/20.04/latest/g' > .github/workflows/release.yml
+
 cargo-dist-build: 	### 	cargo-dist-build
 	RUSTFLAGS="--cfg tokio_unstable" cargo dist build
 cargo-dist-manifest: 	### 	cargo dist manifest --artifacts=all
