@@ -1,14 +1,14 @@
 {
   "dist_version": "0.28.0",
-  "announcement_tag": "v0.0.2",
+  "announcement_tag": "v0.0.3",
   "announcement_tag_is_implicit": true,
   "announcement_is_prerelease": false,
-  "announcement_title": "v0.0.2",
-  "announcement_github_body": "## Install gnostr-clean 0.0.2\n\n### Install prebuilt binaries via shell script\n\n```sh\ncurl --proto '=https' --tlsv1.2 -LsSf https://github.com/gnostr-org/gnostr-clean/releases/download/v0.0.2/gnostr-clean-installer.sh | sh\n```\n\n### Install prebuilt binaries via Homebrew\n\n```sh\nbrew install gnostr-org/gnostr-org/gnostr-clean\n```\n\n## Download gnostr-clean 0.0.2\n\n|  File  | Platform | Checksum |\n|--------|----------|----------|\n| [gnostr-clean-aarch64-apple-darwin.tar.xz](https://github.com/gnostr-org/gnostr-clean/releases/download/v0.0.2/gnostr-clean-aarch64-apple-darwin.tar.xz) | Apple Silicon macOS | [checksum](https://github.com/gnostr-org/gnostr-clean/releases/download/v0.0.2/gnostr-clean-aarch64-apple-darwin.tar.xz.sha256) |\n| [gnostr-clean-x86_64-apple-darwin.tar.xz](https://github.com/gnostr-org/gnostr-clean/releases/download/v0.0.2/gnostr-clean-x86_64-apple-darwin.tar.xz) | Intel macOS | [checksum](https://github.com/gnostr-org/gnostr-clean/releases/download/v0.0.2/gnostr-clean-x86_64-apple-darwin.tar.xz.sha256) |\n\n",
+  "announcement_title": "v0.0.3",
+  "announcement_github_body": "## Install gnostr-clean 0.0.3\n\n### Install prebuilt binaries via shell script\n\n```sh\ncurl --proto '=https' --tlsv1.2 -LsSf https://github.com/gnostr-org/gnostr-clean/releases/download/v0.0.3/gnostr-clean-installer.sh | sh\n```\n\n### Install prebuilt binaries via powershell script\n\n```sh\npowershell -ExecutionPolicy Bypass -c \"irm https://github.com/gnostr-org/gnostr-clean/releases/download/v0.0.3/gnostr-clean-installer.ps1 | iex\"\n```\n\n### Install prebuilt binaries via Homebrew\n\n```sh\nbrew install gnostr-org/gnostr-org/gnostr-clean\n```\n\n## Download gnostr-clean 0.0.3\n\n|  File  | Platform | Checksum |\n|--------|----------|----------|\n| [gnostr-clean-aarch64-apple-darwin.tar.xz](https://github.com/gnostr-org/gnostr-clean/releases/download/v0.0.3/gnostr-clean-aarch64-apple-darwin.tar.xz) | Apple Silicon macOS | [checksum](https://github.com/gnostr-org/gnostr-clean/releases/download/v0.0.3/gnostr-clean-aarch64-apple-darwin.tar.xz.sha256) |\n| [gnostr-clean-x86_64-apple-darwin.tar.xz](https://github.com/gnostr-org/gnostr-clean/releases/download/v0.0.3/gnostr-clean-x86_64-apple-darwin.tar.xz) | Intel macOS | [checksum](https://github.com/gnostr-org/gnostr-clean/releases/download/v0.0.3/gnostr-clean-x86_64-apple-darwin.tar.xz.sha256) |\n| [gnostr-clean-x86_64-pc-windows-msvc.zip](https://github.com/gnostr-org/gnostr-clean/releases/download/v0.0.3/gnostr-clean-x86_64-pc-windows-msvc.zip) | x64 Windows | [checksum](https://github.com/gnostr-org/gnostr-clean/releases/download/v0.0.3/gnostr-clean-x86_64-pc-windows-msvc.zip.sha256) |\n| [gnostr-clean-x86_64-unknown-linux-gnu.tar.xz](https://github.com/gnostr-org/gnostr-clean/releases/download/v0.0.3/gnostr-clean-x86_64-unknown-linux-gnu.tar.xz) | x64 Linux | [checksum](https://github.com/gnostr-org/gnostr-clean/releases/download/v0.0.3/gnostr-clean-x86_64-unknown-linux-gnu.tar.xz.sha256) |\n\n",
   "releases": [
     {
       "app_name": "gnostr-clean",
-      "app_version": "0.0.2",
+      "app_version": "0.0.3",
       "env": {
         "install_dir_env_var": "GNOSTR_CLEAN_INSTALL_DIR",
         "unmanaged_dir_env_var": "GNOSTR_CLEAN_UNMANAGED_INSTALL",
@@ -23,6 +23,7 @@
         "source.tar.gz",
         "source.tar.gz.sha256",
         "gnostr-clean-installer.sh",
+        "gnostr-clean-installer.ps1",
         "gnostr-clean.rb",
         "sha256.sum",
         "gnostr-clean-aarch64-apple-darwin-update",
@@ -30,12 +31,18 @@
         "gnostr-clean-aarch64-apple-darwin.tar.xz.sha256",
         "gnostr-clean-x86_64-apple-darwin-update",
         "gnostr-clean-x86_64-apple-darwin.tar.xz",
-        "gnostr-clean-x86_64-apple-darwin.tar.xz.sha256"
+        "gnostr-clean-x86_64-apple-darwin.tar.xz.sha256",
+        "gnostr-clean-x86_64-pc-windows-msvc-update",
+        "gnostr-clean-x86_64-pc-windows-msvc.zip",
+        "gnostr-clean-x86_64-pc-windows-msvc.zip.sha256",
+        "gnostr-clean-x86_64-unknown-linux-gnu-update",
+        "gnostr-clean-x86_64-unknown-linux-gnu.tar.xz",
+        "gnostr-clean-x86_64-unknown-linux-gnu.tar.xz.sha256"
       ],
       "hosting": {
         "github": {
           "artifact_base_url": "https://github.com",
-          "artifact_download_path": "/gnostr-org/gnostr-clean/releases/download/v0.0.2",
+          "artifact_download_path": "/gnostr-org/gnostr-clean/releases/download/v0.0.3",
           "owner": "gnostr-org",
           "repo": "gnostr-clean"
         }
@@ -83,14 +90,27 @@
         "aarch64-apple-darwin"
       ]
     },
+    "gnostr-clean-installer.ps1": {
+      "name": "gnostr-clean-installer.ps1",
+      "kind": "installer",
+      "target_triples": [
+        "aarch64-pc-windows-msvc",
+        "x86_64-pc-windows-gnu",
+        "x86_64-pc-windows-msvc"
+      ],
+      "install_hint": "powershell -ExecutionPolicy Bypass -c \"irm https://github.com/gnostr-org/gnostr-clean/releases/download/v0.0.3/gnostr-clean-installer.ps1 | iex\"",
+      "description": "Install prebuilt binaries via powershell script"
+    },
     "gnostr-clean-installer.sh": {
       "name": "gnostr-clean-installer.sh",
       "kind": "installer",
       "target_triples": [
         "aarch64-apple-darwin",
-        "x86_64-apple-darwin"
+        "x86_64-apple-darwin",
+        "x86_64-pc-windows-gnu",
+        "x86_64-unknown-linux-gnu"
       ],
-      "install_hint": "curl --proto '=https' --tlsv1.2 -LsSf https://github.com/gnostr-org/gnostr-clean/releases/download/v0.0.2/gnostr-clean-installer.sh | sh",
+      "install_hint": "curl --proto '=https' --tlsv1.2 -LsSf https://github.com/gnostr-org/gnostr-clean/releases/download/v0.0.3/gnostr-clean-installer.sh | sh",
       "description": "Install prebuilt binaries via shell script"
     },
     "gnostr-clean-x86_64-apple-darwin-update": {
@@ -133,12 +153,94 @@
         "x86_64-apple-darwin"
       ]
     },
+    "gnostr-clean-x86_64-pc-windows-msvc-update": {
+      "name": "gnostr-clean-x86_64-pc-windows-msvc-update",
+      "kind": "updater",
+      "target_triples": [
+        "x86_64-pc-windows-msvc"
+      ]
+    },
+    "gnostr-clean-x86_64-pc-windows-msvc.zip": {
+      "name": "gnostr-clean-x86_64-pc-windows-msvc.zip",
+      "kind": "executable-zip",
+      "target_triples": [
+        "x86_64-pc-windows-msvc"
+      ],
+      "assets": [
+        {
+          "name": "LICENSE",
+          "path": "LICENSE",
+          "kind": "license"
+        },
+        {
+          "name": "README.md",
+          "path": "README.md",
+          "kind": "readme"
+        },
+        {
+          "id": "gnostr-clean-x86_64-pc-windows-msvc-exe-gnostr-clean",
+          "name": "gnostr-clean",
+          "path": "gnostr-clean.exe",
+          "kind": "executable"
+        }
+      ],
+      "checksum": "gnostr-clean-x86_64-pc-windows-msvc.zip.sha256"
+    },
+    "gnostr-clean-x86_64-pc-windows-msvc.zip.sha256": {
+      "name": "gnostr-clean-x86_64-pc-windows-msvc.zip.sha256",
+      "kind": "checksum",
+      "target_triples": [
+        "x86_64-pc-windows-msvc"
+      ]
+    },
+    "gnostr-clean-x86_64-unknown-linux-gnu-update": {
+      "name": "gnostr-clean-x86_64-unknown-linux-gnu-update",
+      "kind": "updater",
+      "target_triples": [
+        "x86_64-unknown-linux-gnu"
+      ]
+    },
+    "gnostr-clean-x86_64-unknown-linux-gnu.tar.xz": {
+      "name": "gnostr-clean-x86_64-unknown-linux-gnu.tar.xz",
+      "kind": "executable-zip",
+      "target_triples": [
+        "x86_64-unknown-linux-gnu"
+      ],
+      "assets": [
+        {
+          "name": "LICENSE",
+          "path": "LICENSE",
+          "kind": "license"
+        },
+        {
+          "name": "README.md",
+          "path": "README.md",
+          "kind": "readme"
+        },
+        {
+          "id": "gnostr-clean-x86_64-unknown-linux-gnu-exe-gnostr-clean",
+          "name": "gnostr-clean",
+          "path": "gnostr-clean",
+          "kind": "executable"
+        }
+      ],
+      "checksum": "gnostr-clean-x86_64-unknown-linux-gnu.tar.xz.sha256"
+    },
+    "gnostr-clean-x86_64-unknown-linux-gnu.tar.xz.sha256": {
+      "name": "gnostr-clean-x86_64-unknown-linux-gnu.tar.xz.sha256",
+      "kind": "checksum",
+      "target_triples": [
+        "x86_64-unknown-linux-gnu"
+      ]
+    },
     "gnostr-clean.rb": {
       "name": "gnostr-clean.rb",
       "kind": "installer",
       "target_triples": [
         "aarch64-apple-darwin",
-        "x86_64-apple-darwin"
+        "x86_64-apple-darwin",
+        "x86_64-pc-windows-gnu",
+        "x86_64-unknown-linux-gnu"
       ],
       "install_hint": "brew install gnostr-org/gnostr-org/gnostr-clean",
       "description": "Install prebuilt binaries via Homebrew"
@@ -197,6 +299,32 @@
             "dist_args": "--artifacts=local --target=x86_64-apple-darwin",
             "targets": [
               "x86_64-apple-darwin"
+            ],
+            "cache_provider": "github"
+          },
+          {
+            "runner": "windows-2019",
+            "host": "x86_64-pc-windows-msvc",
+            "install_dist": {
+              "shell": "pwsh",
+              "run": "irm https://github.com/axodotdev/cargo-dist/releases/download/v0.28.0/cargo-dist-installer.ps1 | iex"
+            },
+            "dist_args": "--artifacts=local --target=x86_64-pc-windows-msvc",
+            "targets": [
+              "x86_64-pc-windows-msvc"
+            ],
+            "cache_provider": "github"
+          },
+          {
+            "runner": "ubuntu-20.04",
+            "host": "x86_64-unknown-linux-gnu",
+            "install_dist": {
+              "shell": "sh",
+              "run": "curl --proto '=https' --tlsv1.2 -LsSf https://github.com/axodotdev/cargo-dist/releases/download/v0.28.0/cargo-dist-installer.sh | sh"
+            },
+            "dist_args": "--artifacts=local --target=x86_64-unknown-linux-gnu",
+            "targets": [
+              "x86_64-unknown-linux-gnu"
             ],
             "cache_provider": "github"
           }
