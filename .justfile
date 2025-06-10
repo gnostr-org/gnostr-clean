@@ -52,8 +52,8 @@ cargo-report:
 cargo-run:
   @make cargo-run
 
-cargo-dist:
-  @make cargo-dist
+cargo-dist-init:
+  @make cargo-dist-init
 
 cargo-dist-build:
   @make cargo-dist-build
