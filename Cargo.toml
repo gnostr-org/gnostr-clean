@@ -1,6 +1,6 @@
 [package]
 name = "gnostr-clean"
-version = "0.1.2" # remember to update html_root_url
+version = "0.0.1" # remember to update html_root_url
 authors = ["Isaac Whitfield <iw@whitfin.io>"]
 description = "Quickly clean up your development directories on disk"
 repository = "https://github.com/whitfin/detox"
@@ -18,3 +18,8 @@ walkdir = "2.2"
 codegen-units = 1
 opt-level = 3
 lto = true
+
+# The profile that 'dist' will build with
+[profile.dist]
+inherits = "release"
+lto = "thin"
