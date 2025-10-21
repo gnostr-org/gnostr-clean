@@ -23,8 +23,8 @@ impl Cleaner for GitCleaner {
         super::cmd(dir, "git", &["gc", "--prune=now", "--aggressive"])?;
 
         // Then, delete the .git and .libs directories if they exist
-        super::del(dir, ".git")?;
-        super::del(dir, ".libs")?;
+        //super::del(dir, ".git")?;
+        //super::del(dir, ".libs")?;
         Ok(())
     }
 }
