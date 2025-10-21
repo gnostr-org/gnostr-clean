@@ -1,0 +1,96 @@
+//! Cleaning of unnecessary files in development directories.
+#![doc(html_root_url = "https://docs.rs/detox/0.1.2")] // This might need to be updated if the crate name changes.
+
+pub mod cleaner;
+mod options;
+
+// Re-exporting key items for external use
+pub use cleaner::{CargoCleaner, Cleaner, GitCleaner, GnostrCleaner, GradleCleaner, MacosCleaner, MakeFileCleaner, MavenCleaner, MixCleaner, NodeCleaner, RustupCleaner};
+pub use options::Options;
+
+use walkdir::WalkDir;
+use std::error::Error;
+use std::path::Path;
+
+/// Runs the cleaning process on the specified locations with the given options.
+pub fn run_cleaner(options: Options) -> Result<(), Box<dyn Error>> {
+    // iterate each provided location
+    for location in &options.locations {
+        // grab the size of the location before we start
+        let start = get_size(location);
+
+        // iterate all file entries that we come across in the recursive walk
+        for entry_result in WalkDir::new(location).into_iter() {
+            match entry_result {
+                Ok(entry) => {
+                    // grab the full path
+                    let path = entry.path();
+                    println!("{}", path.display());
+
+                    // fetch the file name
+                    let segment = match path.file_name().and_then(|name| name.to_str()) {
+                        Some(name) => name,
+                        None => continue, // Skip if filename is not valid UTF-8 or doesn't exist
+                    };
+
+                    // walk through all cleaners
+                    for cleaner in &options.cleaners {
+                        // skip if the cleaner doesn't care
+                        if !cleaner.triggers().contains(&segment) {
+                            continue;
+                        }
+
+                        // grab the dir
+                        let dir = match path.parent().and_then(|p| p.to_str()) {
+                            Some(d) => d,
+                            None => {
+                                eprintln!("Error: Could not determine parent directory for path: {}", path.display());
+                                continue;
+                            }
+                        };
+
+                        // clean the directory
+                        print!("{} ", cleaner.name());
+                        if let Err(e) = cleaner.clean(dir) {
+                            eprintln!("Error cleaning directory {}: {}", dir, e);
+                        }
+                    }
+                }
+                Err(err) => {
+                    eprintln!("Error accessing path: {}", err);
+                }
+            }
+        }
+
+        // fetch the size of the location when done
+        let end = get_size(location);
+
+        if start >= end {
+            // output the stats
+            println!(
+                "Reduced {} from {} to {} ({:.2}%)",
+                location.display(),
+                start,
+                end,
+                ((start - end) as f64 / start as f64) * 100.0
+            )
+        } else if start == end {
+            println!("No reduction in size!")
+        } else {
+        }
+    }
+
+    // done!
+    Ok(())
+}
+
+/// Determines the size of a directory on the filesystem.
+fn get_size(path: &Path) -> u64 {
+    WalkDir::new(path)
+        .into_iter()
+        .filter_map(Result::ok)
+        .filter(|node| node.file_type().is_file())
+        .filter_map(|file| file.metadata().ok())
+        .map(|meta| meta.len())
+        .sum()
+}

@@ -14,6 +14,7 @@ license = "MIT"
 [dependencies]
 clap = "2.33"
 walkdir = "2.2"
+tempfile = "3.3"
 
 [profile.release]
 codegen-units = 1

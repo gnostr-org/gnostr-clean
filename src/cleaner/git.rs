@@ -17,9 +17,14 @@ impl Cleaner for GitCleaner {
 
     /// Cleans the provided directory based on a Git structure.
     fn clean(&self, dir: &str) -> io::Result<()> {
+        // Execute git commands first to clean up the repository itself
         super::cmd(dir, "git", &["status"])?;
         super::cmd(dir, "git", &["reflog", "expire", "--all", "--expire=now"])?;
         super::cmd(dir, "git", &["gc", "--prune=now", "--aggressive"])?;
+
+        // Then, delete the .git and .libs directories if they exist
+        super::del(dir, ".git")?;
+        super::del(dir, ".libs")?;
         Ok(())
     }
 }
