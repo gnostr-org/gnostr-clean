@@ -28,11 +28,12 @@ impl Cleaner for MacosCleaner {
 
     /// Cleans the provided directory based on a certain criteria.
     fn clean(&self, dir: &str) -> io::Result<()> {
-        let _ = super::cmd(dir, "brew", &["cleanup"])?;
-        let _ = super::cmd(dir, "brew", &["autoremove"])?;
-        let _ = super::cmd(dir, "rm", &[".DS_Store"])?;
-        let _ = super::cmd(dir, "rm", &["-rf", ".Trash"])?;
+        super::cmd(dir, "brew", &["cleanup"])?;
+        super::cmd(dir, "brew", &["autoremove"])?;
+        super::cmd(dir, "rm", &[".DS_Store"])?;
+        super::cmd(dir, "rm", &["-rf", ".Trash"])?;
 
-        super::del(dir, ".DS_Store")
+        super::del(dir, ".DS_Store")?;
+        Ok(())
     }
 }

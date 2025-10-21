@@ -41,7 +41,15 @@ impl Options {
             locations: options
                 .values_of("locations")
                 .unwrap()
-                .filter_map(|location| PathBuf::from(location).canonicalize().ok())
+                .filter_map(|location| {
+                    match PathBuf::from(location).canonicalize() {
+                        Ok(path) => Some(path),
+                        Err(e) => {
+                            eprintln!("Error canonicalizing path {}: {}", location, e);
+                            None
+                        }
+                    }
+                })
                 .collect(),
         }
     }

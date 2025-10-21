@@ -21,9 +21,8 @@ pub use mix::MixCleaner;
 pub use node::NodeCleaner;
 pub use rustup::RustupCleaner;
 
-use std::env;
 use std::fs;
-use std::io::{self, ErrorKind};
+use std::io::{self};
 use std::process::{Command, Stdio};
 use std::str;
 
@@ -39,50 +38,27 @@ pub trait Cleaner {
     fn triggers(&self) -> &[&str];
 }
 
-fn is_program_in_path(program: &str) -> bool {
-    if let Ok(path) = env::var("PATH") {
-        for p in path.split(":") {
-            let p_str = format!("{}/{}", p, program);
-            if fs::metadata(&p_str).is_ok() {
-                println!("Trying: {}", p_str);
-                return true;
-            }
-        }
-    }
-    false
-}
 
 /// Executes a command in a directory using provided arguments.
-pub fn cmd(dir: &str, cmd: &str, args: &[&str]) -> io::Result<()> {
-    let is_command = is_program_in_path(cmd);
-    if !is_command {
-        let cmd = &"ls";
-        let cmd_output = Command::new(cmd)
-            .current_dir(dir)
-            .stdout(Stdio::piped())
-            .stderr(Stdio::null())
-            .spawn()?
-            .wait_with_output()?;
-        if !cmd_output.status.success() {
-            println!("Command failed with status: {}", cmd_output.status);
-        }
-        let cmd_stdout = str::from_utf8(&cmd_output.stdout).expect("");
-        println!("ls Stdout: {}", cmd_stdout);
-    } else {
-        let cmd_output = Command::new(cmd)
-            .args(args)
-            .current_dir(dir)
-            .stdout(Stdio::piped())
-            .stderr(Stdio::null())
-            .spawn()?
-            .wait_with_output()?;
-        if !cmd_output.status.success() {
-            println!("Command failed with status: {}", cmd_output.status);
-        }
-        let cmd_stdout = str::from_utf8(&cmd_output.stdout).expect("");
-        println!("Cmd Stdout: {}", cmd_stdout);
+pub fn cmd(dir: &str, cmd_name: &str, args: &[&str]) -> io::Result<String> {
+    let output = Command::new(cmd_name)
+        .args(args)
+        .current_dir(dir)
+        .stdout(Stdio::piped())
+        .stderr(Stdio::piped())
+        .spawn()?;
+
+    let output = output.wait_with_output()?;
+
+    if !output.status.success() {
+        let stderr = String::from_utf8_lossy(&output.stderr);
+        return Err(io::Error::new(
+            io::ErrorKind::Other,
+            format!("Command failed: {} with status: {}\nStderr: {}", cmd_name, output.status, stderr),
+        ));
     }
-    Ok(())
+
+    Ok(String::from_utf8_lossy(&output.stdout).to_string())
 }
 
 /// Purges a location on disk, similar to `rm -rf`.
@@ -90,46 +66,20 @@ pub fn del(parent: &str, child: &str) -> io::Result<()> {
     let dir_path = format!("{}/{}", parent, child);
     println!("{}", dir_path);
 
-    // check for errors that we're ok with
-    if let Err(err) = fs::remove_dir_all(dir_path) {
-        // if already gone, happy days are upon us
-        if err.kind() == ErrorKind::NotFound {
-            return Ok(());
-        }
-        // if there's a permission error, we don't care
-        if err.kind() == ErrorKind::PermissionDenied {
-            return Ok(());
-        }
-        if err.kind() == ErrorKind::Other {
+    // Attempt to remove the directory. If it doesn't exist, it's not an error.
+    if let Err(err) = fs::remove_dir_all(&dir_path) {
+        if err.kind() != io::ErrorKind::NotFound {
+            // If it's not 'NotFound', try removing as a file.
+            // This handles cases where a directory might have been created with a file-like name or vice-versa.
             let file_path = format!("{}/{}", parent, child);
-            println!("{}", file_path);
-            // check for errors that we're ok with
-            if let Err(err) = fs::remove_file(file_path) {
-                // if already gone, happy days are upon us
-                if err.kind() == ErrorKind::NotFound {
-                    return Ok(());
+            if let Err(file_err) = fs::remove_file(&file_path) {
+                if file_err.kind() != io::ErrorKind::NotFound {
+                    // If neither removing as a directory nor as a file worked (and it wasn't NotFound),
+                    // return the error.
+                    return Err(file_err);
                 }
-
-                // if there's a permission error, we don't care
-                if err.kind() == ErrorKind::PermissionDenied {
-                    return Ok(());
-                }
-                if err.kind() == ErrorKind::Other {
-                    return Ok(());
-                }
-
-                // others, bad!
-                // return Err(err);
-                println!("{:?}", Some(err));
             }
-
-            return Ok(());
         }
-
-        // others, bad!
-        // return Err(err);
-        println!("{:?}", Some(err));
     }
-
     Ok(())
 }

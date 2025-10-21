@@ -21,35 +21,45 @@ fn main() -> Result<(), Box<dyn Error>> {
         let start = get_size(location);
 
         // iterate all file entries that we come across in the recursive walk
-        for entry in WalkDir::new(location).into_iter().filter_map(Result::ok) {
-            // grab the full path
-            let path = entry.path();
-            println!("{}", path.display());
+        for entry_result in WalkDir::new(location).into_iter() {
+            match entry_result {
+                Ok(entry) => {
+                    // grab the full path
+                    let path = entry.path();
+                    println!("{}", path.display());
 
-            // fetch the file name
-            let segment = path
-                .file_name()
-                .unwrap()
-                .to_str()
-                .expect("a segment should exist");
+                    // fetch the file name
+                    let segment = match path.file_name().and_then(|name| name.to_str()) {
+                        Some(name) => name,
+                        None => continue, // Skip if filename is not valid UTF-8 or doesn't exist
+                    };
 
-            // walk through all cleaners
-            for cleaner in &options.cleaners {
-                // skip if the cleaner doesn't care
-                if !cleaner.triggers().contains(&segment) {
-                    continue;
+                    // walk through all cleaners
+                    for cleaner in &options.cleaners {
+                        // skip if the cleaner doesn't care
+                        if !cleaner.triggers().contains(&segment) {
+                            continue;
+                        }
+
+                        // grab the dir
+                        let dir = match path.parent().and_then(|p| p.to_str()) {
+                            Some(d) => d,
+                            None => {
+                                eprintln!("Error: Could not determine parent directory for path: {}", path.display());
+                                continue;
+                            }
+                        };
+
+                        // clean the directory
+                        print!("{} ", cleaner.name());
+                        if let Err(e) = cleaner.clean(dir) {
+                            eprintln!("Error cleaning directory {}: {}", dir, e);
+                        }
+                    }
                 }
-
-                // grab the dir
-                let dir = path
-                    .parent()
-                    .unwrap()
-                    .to_str()
-                    .expect("dir should be a str");
-
-                // clean the directory
-                print!("{} ", cleaner.name());
-                cleaner.clean(dir)?;
+                Err(err) => {
+                    eprintln!("Error accessing path: {}", err);
+                }
             }
         }
 

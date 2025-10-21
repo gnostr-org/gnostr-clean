@@ -17,7 +17,8 @@ impl Cleaner for RustupCleaner {
 
     /// cleaner the provided directory based on a Cargo structure.
     fn clean(&self, dir: &str) -> io::Result<()> {
-        let _ = super::del(dir, ".rustup");
-        super::cmd(dir, "rustup", &["default", "stable"])
+        super::del(dir, ".rustup")?;
+        super::cmd(dir, "rustup", &["default", "stable"])?;
+        Ok(())
     }
 }

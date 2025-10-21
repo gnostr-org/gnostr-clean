@@ -20,6 +20,7 @@ impl Cleaner for MixCleaner {
         super::cmd(dir, "mix", &["clean"])?;
         super::del(dir, "build")?;
         super::del(dir, "deps")?;
-        super::del(dir, "doc")
+        super::del(dir, "doc")?;
+        Ok(())
     }
 }

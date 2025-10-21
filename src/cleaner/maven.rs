@@ -18,6 +18,7 @@ impl Cleaner for MavenCleaner {
     /// Cleans the provided directory based on a Git structure.
     fn clean(&self, dir: &str) -> io::Result<()> {
         super::cmd(dir, "mvn", &["clean"])?;
-        super::del(dir, "target")
+        super::del(dir, "target")?;
+        Ok(())
     }
 }

@@ -19,6 +19,7 @@ impl Cleaner for GradleCleaner {
     fn clean(&self, dir: &str) -> io::Result<()> {
         super::cmd(dir, "gradle", &["clean"])?;
         super::del(dir, "build")?;
-        super::del(dir, "out")
+        super::del(dir, "out")?;
+        Ok(())
     }
 }

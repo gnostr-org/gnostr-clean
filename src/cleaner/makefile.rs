@@ -29,6 +29,7 @@ impl Cleaner for MakeFileCleaner {
         super::cmd(dir, "rm", &["-rf", "build"])?;
         super::cmd(dir, "rm", &["-rf", ".deps"])?;
         super::cmd(dir, "rm", &["-rf", ".libs"])?;
-        super::cmd(dir, "rm", &["-rf", "CmakeCache"])
+        super::cmd(dir, "rm", &["-rf", "CmakeCache"])?;
+        Ok(())
     }
 }

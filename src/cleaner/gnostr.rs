@@ -18,6 +18,7 @@ impl Cleaner for GnostrCleaner {
     /// cleaner the provided directory based on a Cargo structure.
     fn clean(&self, dir: &str) -> io::Result<()> {
         super::cmd(dir, "cargo", &["clean"])?;
-        super::del(dir, "node_modules")
+        super::del(dir, "node_modules")?;
+        Ok(())
     }
 }
