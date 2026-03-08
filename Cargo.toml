@@ -1,5 +1,5 @@
 [package]
-name = "cargo-clean-all"
+name = "gnostr-clean"
 version = "0.6.4"
 authors = ["Daniel M <danielm-github@dnml.de>"]
 license = "MIT"
